@@ -1,0 +1,158 @@
+import React, { useState, useCallback } from "react";
+import {
+  LikeOutlined,
+  MessageOutlined,
+  StarOutlined,
+  EllipsisOutlined,
+} from "@ant-design/icons";
+import { Avatar, List, Space, Comment, Popover, Button } from "antd";
+import PropTypes from "prop-types";
+import styled from "styled-components";
+import Link from "next/link";
+import { useSelector, useDispatch } from "react-redux";
+
+import CommentForm from "./CommentForm";
+import { REMOVE_POST_REQUEST } from "../reducers/post.js";
+
+const PostCardContent = ({ post }) => {
+  //console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+  //console.log(post);
+
+  const dispatch = useDispatch();
+  const { removePostLoading } = useSelector((state) => state.post);
+  const id = useSelector((state) => state.user.me?.id);
+  const { me } = useSelector((state) => state.user);
+
+  const [commentFormOpened, setCommentFormOpened] = useState(false);
+  const onToggleComment = useCallback(() => {
+    setCommentFormOpened((prev) => !prev);
+  }, []);
+
+  const onRemovePost = useCallback(() => {
+    if (!id) {
+      return alert("로그인이 필요합니다.");
+    }
+    return dispatch({
+      type: REMOVE_POST_REQUEST,
+      data: post.id,
+    });
+  }, [id]);
+
+  const IconText = ({ icon, text, cb }) => (
+    <Space>
+      <div onClick={cb} style={{ cursor: "pointer" }}>
+        {React.createElement(icon)} {text}
+      </div>
+    </Space>
+  );
+
+  const CardWrapper = styled.div`
+    margin-bottom: 10px;
+    background-color: white;
+    padding: 40px;
+    width: 700px;
+  `;
+
+  return (
+    <CardWrapper>
+      <List.Item
+        key={post.id}
+        actions={[
+          // <IconText
+          //   icon={StarOutlined}
+          //   text=`${post.}`
+          //   key="list-vertical-star-o"
+          // />,
+          <IconText
+            icon={LikeOutlined}
+            text="135"
+            key="list-vertical-like-o"
+          />,
+          <IconText
+            icon={MessageOutlined}
+            key="list-vertical-message"
+            text="2"
+            cb={onToggleComment}
+          />,
+          <Popover
+            key="more"
+            content={
+              <Button.Group>
+                {id && post.User.id === id ? (
+                  <>
+                    <Button>수정</Button>
+                    <Button
+                      type="danger"
+                      loading={removePostLoading}
+                      onClick={onRemovePost}
+                    >
+                      삭제
+                    </Button>
+                  </>
+                ) : (
+                  <Button>신고</Button>
+                )}
+              </Button.Group>
+            }
+          >
+            <EllipsisOutlined />
+          </Popover>,
+        ]}
+        style={{
+          textAlign: "center",
+        }}
+      >
+        <List.Item.Meta
+          avatar={
+            <Avatar
+              src={post.avatar}
+              style={{ width: "45px", height: "45px" }}
+            />
+          }
+          title={post.User.nickname}
+          description={post.description}
+        />
+        <div
+          style={{
+            width: "575px",
+            height: "575px",
+            display: "flex",
+            margin: "0 auto",
+          }}
+        >
+          <img
+            width="100%"
+            height="100%"
+            style={{ objectFit: "cover", justifyContent: "center" }}
+            alt="logo"
+            src={post.imagePaths}
+          />
+        </div>
+        <br />
+        <div style={{ fontSize: "18px", fontWeight: "500" }}>
+          {post.content}
+        </div>
+        <div style={{ width: "400px" }}></div>
+      </List.Item>
+      {commentFormOpened && (
+        <>
+          <CommentForm post={post} />
+        </>
+      )}
+    </CardWrapper>
+  );
+};
+
+PostCardContent.propTypes = {
+  post: PropTypes.shape({
+    id: PropTypes.number,
+    User: PropTypes.object,
+    content: PropTypes.string,
+    nickname: PropTypes.string,
+    description: PropTypes.string,
+    avatar: PropTypes.any,
+    Comments: PropTypes.arrayOf(PropTypes.any),
+  }),
+};
+
+export default PostCardContent;
