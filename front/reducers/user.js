@@ -79,12 +79,6 @@ export const modifynickAction = (data) => {
     data,
   };
 };
-export const signupAction = (data) => {
-  return {
-    type: SIGN_UP,
-    data,
-  };
-};
 
 // (이전상태,액션) => 다음상태
 const reducer = (state = initialState, action) => {

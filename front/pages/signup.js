@@ -6,30 +6,19 @@ import AppLayout from "../components/AppLayout";
 import useInput from "../hooks/useInput";
 
 import { useDispatch, useSelector } from "react-redux";
-import { signupAction } from "../reducers/user";
+import { SIGN_UP_REQUEST } from "../reducers/user";
 
 const Signup = () => {
-  const [passwordCheck, setPasswordCheck] = useState("");
-  const [term, setTerm] = useState(false);
-  const [passwordError, setPasswordError] = useState(false);
-  const [termError, setTermError] = useState(false);
+  const dispatch = useDispatch();
+  const { signUpLoading, signUpDone, signUpError, me } = useSelector((state) => state.user);
+
 
   const [id, onChangeId] = useInput("");
   const [nickname, onChangeNick] = useInput("");
   const [password, onChangePassword] = useInput("");
-
-  const dispatch = useDispatch();
-
-  const onSubmit = useCallback(() => {
-    if (password !== passwordCheck) {
-      return setPasswordError(true);
-    }
-    if (!term) {
-      return setTermError(true);
-    }
-    console.log(id, password);
-    dispatch(signupAction({ id, password, nickname }));
-  }, [id, password, passwordCheck, term]);
+  
+  const [passwordCheck, setPasswordCheck] = useState("");
+  const [passwordError, setPasswordError] = useState(false);
 
   const onChangePasswordCheck = useCallback(
     (e) => {
@@ -39,10 +28,26 @@ const Signup = () => {
     [password]
   );
 
+  const [term, setTerm] = useState(false);
+  const [termError, setTermError] = useState(false);
+
   const onChangeTerm = useCallback((e) => {
     setTermError(false);
     setTerm(e.target.checked);
   }, []);
+
+
+  const onSubmit = useCallback(() => {
+    if (password !== passwordCheck) {
+      return setPasswordError(true);
+    }
+
+    console.log(id, password);
+    dispatch({ 
+      type:SIGN_UP_REQUEST,
+      data :{id, password, nickname},
+    });
+  },[username,password,passwordCheck]
 
   return (
     <AppLayout>

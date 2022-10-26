@@ -12,4 +12,4 @@ router.delete("/", (req, res) => {
   res.json({ id: 1, content: "hello" });
 });
 
-module.export = router;
+module.exports = router;
