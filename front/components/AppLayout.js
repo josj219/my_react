@@ -33,6 +33,7 @@ const FooterWrapper = styled.div`
 const AppLayout = ({ children }) => {
   const { EditNickname, logInDone, me } = useSelector((state) => state.user);
 
+  console.log("APPLAYOUT");
   console.log(logInDone);
   console.log(EditNickname);
   console.log(me);

@@ -7,16 +7,24 @@ import useInput from "../hooks/useInput";
 
 import { useDispatch, useSelector } from "react-redux";
 import { SIGN_UP_REQUEST } from "../reducers/user";
+import Router from "next/router";
 
 const Signup = () => {
   const dispatch = useDispatch();
-  const { signUpLoading, signUpDone, signUpError, me } = useSelector((state) => state.user);
+  const { signUpLoading, signUpDone, signUpError, me } = useSelector(
+    (state) => state.user
+  );
 
+  useEffect(() => {
+    if (signUpDone) {
+      Router.push("/");
+    }
+  }, [signUpDone]);
 
   const [id, onChangeId] = useInput("");
   const [nickname, onChangeNick] = useInput("");
   const [password, onChangePassword] = useInput("");
-  
+
   const [passwordCheck, setPasswordCheck] = useState("");
   const [passwordError, setPasswordError] = useState(false);
 
@@ -36,18 +44,17 @@ const Signup = () => {
     setTerm(e.target.checked);
   }, []);
 
-
   const onSubmit = useCallback(() => {
     if (password !== passwordCheck) {
       return setPasswordError(true);
     }
 
     console.log(id, password);
-    dispatch({ 
-      type:SIGN_UP_REQUEST,
-      data :{id, password, nickname},
+    dispatch({
+      type: SIGN_UP_REQUEST,
+      data: { id, password, nickname },
     });
-  },[username,password,passwordCheck]
+  }, [id, password, passwordCheck]);
 
   return (
     <AppLayout>

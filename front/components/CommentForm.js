@@ -47,7 +47,7 @@ const CommentForm = ({ post }) => {
       type: ADD_COMMENT_REQUEST,
       data: {
         content: commentText,
-        user: me,
+        userId: id,
         postId: post.id,
       },
     });

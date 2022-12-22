@@ -35,7 +35,9 @@ const CardWrapper = styled.div`
 `;
 
 const PostCard2 = () => {
-  const { mainPosts } = useSelector((state) => state.post);
+  const { mainPosts, hasMorePosts, loadPostsLoading } = useSelector(
+    (state) => state.post
+  );
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -45,7 +47,29 @@ const PostCard2 = () => {
     });
   }, []);
 
+  useEffect(() => {
+    function onScroll() {
+      if (
+        window.pageYOffset + document.documentElement.clientHeight >
+        document.documentElement.scrollHeight - 300
+      ) {
+        if (hasMorePosts && !loadPostsLoading) {
+          const lastId = mainPosts[mainPosts.length - 1]?.id;
+          dispatch({
+            type: LOAD_POSTS_REQUEST,
+            lastId,
+          });
+        }
+      }
+    }
+    window.addEventListener("scroll", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+    };
+  }, [hasMorePosts, loadPostsLoading, mainPosts]);
+
   console.log(mainPosts);
+
   return (
     <List
       itemLayout="vertical"

@@ -20,7 +20,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { ADD_POST_REQUEST } from "../reducers/post";
 
 const PostForm = () => {
-  const { addPostDone } = useSelector((state) => state.post);
+  const { addPost, addPostDone } = useSelector((state) => state.post);
 
   const [text, onChangeText, setText] = useInput("");
   const dispatch = useDispatch();
@@ -31,13 +31,22 @@ const PostForm = () => {
     }
   }, [addPostDone]);
 
-  //   const onSubmit = useCallback(() => {
-  //     dispatch(addPost(text));
-  //   }, [text]);
-  //  // content, Avatar
+  // const onSubmit = useCallback(() => {
+  //   if (!text || !text.trim()) {
+  //     return alert("게시글을 작성하세요.");
+  //   }
+  //   const formData = new FormData();
+
+  //   formData.append("content", text);
+  //   return dispatch({
+  //     type: ADD_POST_REQUEST,
+  //     data: formData,
+  //   });
+  // }, [text]);
+  // // content, Avatar
   const { me } = useSelector((state) => state.user);
 
-  const onSubmitComment = useCallback(() => {
+  const onSubmit = useCallback(() => {
     console.log(
       "CLIKEDCLIKEDCLIKEDCLIKEDCLIKEDCLIKEDCLIKEDCLIKEDCLIKEDCLIKEDCLIKEDCLIKEDCLIKEDCLIKEDCLIKED"
     );
@@ -115,7 +124,7 @@ const PostForm = () => {
             <Button
               type="primary"
               block
-              onClick={onSubmitComment}
+              onClick={onSubmit}
               style={{ padding: "0 10px" }}
             >
               POST

@@ -152,7 +152,7 @@ const reducer = (state = initialState, action) => {
         (v) => v.id === action.data.postId
       );
       const post = { ...state.mainPosts[postIndex] };
-      post.Comments = [dummyComment(action.data), ...post.Comments];
+      post.Comments = [action.data, ...post.Comments];
       const mainPosts = [...state.mainPosts];
       mainPosts[postIndex] = post;
 
@@ -205,7 +205,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         addPostLoading: false,
         addPostDone: true,
-        mainPosts: [dummyPost(action.data), ...state.mainPosts],
+        mainPosts: [action.data, ...state.mainPosts],
       };
     }
     case ADD_POST_FAILURE: {
@@ -227,7 +227,8 @@ const reducer = (state = initialState, action) => {
         ...state,
         loadPostsLoading: false,
         loadPostsDone: true,
-        mainPosts: [action.data[0], action.data[1], ...state.mainPosts],
+        mainPosts: action.data,
+        hasMorePosts: action.data.length === 10,
         // mainPosts: [dummyPost, ...state.mainPosts],
       };
     }

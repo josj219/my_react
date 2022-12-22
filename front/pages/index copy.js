@@ -15,10 +15,14 @@ const Home = () => {
   return (
     <AppLayout>
       {isLoggedIn && <PostForm />}
-      <PostCard2 post={mainPosts} />
-      {/* {mainPosts.map((c) => {
-        return <PostCard key={c.id} post={c} />;
-      })} */}
+      //<PostCard post={mainPosts} />
+      
+      
+      
+      
+      {mainPosts.map((c) => {
+        return <PostCard2 key={c.id} post={c} />;
+      })} 
     </AppLayout>
   );
 };

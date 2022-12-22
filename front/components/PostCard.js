@@ -110,7 +110,7 @@ const PostCard = ({ post }) => {
                   rederItem={(a) => (
                     <li>
                       {a}
-                      {/* <Comment
+                      <Comment
                         author={item.User.nickname}
                         avatar={
                           <Link>
@@ -118,7 +118,7 @@ const PostCard = ({ post }) => {
                           </Link>
                         }
                         content={item.content}
-                      /> */}
+                      />
                     </li>
                   )}
                 />

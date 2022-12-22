@@ -9,10 +9,19 @@ import PostCard from "../components/PostCard";
 import PostCard2 from "../components/PostCard2";
 
 import { LOAD_POSTS_REQUEST } from "../reducers/post";
+import { LOAD_USER_REQUEST } from "../reducers/user";
 
 const Home = () => {
-  //const dispatch = useDispatch();
   const { me } = useSelector((state) => state.user);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch({
+      type: LOAD_USER_REQUEST,
+    });
+  }, []);
+
   console.log("MEMEMEMEME @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
   console.log(me);
   console.log("MEMEMEMEME @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");

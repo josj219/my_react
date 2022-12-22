@@ -24,8 +24,9 @@ const UserProfile = () => {
   const TitleWrapper = styled.span`
     padding-right: 10px;
   `;
-
+  console.log("USERPROFILE의 me");
   console.log(me);
+
   const changeNickname = useCallback((e) => {
     console.log("Chnage Nickname");
     dispatch(editnicknameAction());
@@ -54,7 +55,7 @@ const UserProfile = () => {
               <a>
                 Post
                 <br />
-                {me.Posts.length}
+                {/* {me.Posts.length} */}
               </a>
             </Link>
           </div>,
@@ -63,7 +64,7 @@ const UserProfile = () => {
               <a>
                 Followings
                 <br />
-                {me.Followings.length}
+                {/* {me.Followings.length} */}
               </a>
             </Link>
           </div>,
@@ -72,7 +73,7 @@ const UserProfile = () => {
               <a>
                 Followers
                 <br />
-                {me.Followers.length}
+                {/* {me.Followers.length} */}
               </a>
             </Link>
           </div>,

@@ -33,7 +33,14 @@ export const initialState = {
   signUpData: {},
   loginData: {},
   IsProfilepage: false,
+  loadUserLoading: false, // 유저 정보 가져오기 시도중
+  loadUserDone: false,
+  loadUserError: null,
 };
+
+export const LOAD_USER_REQUEST = "LOAD_USER_REQUEST";
+export const LOAD_USER_SUCCESS = "LOAD_USER_SUCCESS";
+export const LOAD_USER_FAILURE = "LOAD_USER_FAILURE";
 
 export const SIGN_UP_REQUEST = "SIGN_UP_REQUEST";
 export const SIGN_UP_SUCCESS = "SIGN_UP_SUCCESS";
@@ -83,27 +90,50 @@ export const modifynickAction = (data) => {
 // (이전상태,액션) => 다음상태
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case LOAD_USER_REQUEST: {
+      return {
+        ...state,
+        loadUserLoading: true,
+        loadUserError: null,
+        loadUserDone: false,
+      };
+    }
+    case LOAD_USER_SUCCESS: {
+      return {
+        ...state,
+        loadUserLoading: false,
+        me: action.data,
+        loadUserDone: true,
+      };
+    }
+    case LOAD_USER_FAILURE: {
+      return {
+        ...state,
+        loadUserLoading: false,
+        loadUserError: action.error,
+      };
+    }
     case LOG_IN_REQUEST: {
       return {
         ...state,
-        logInDone: false,
         logInLoading: true,
+        logInError: null,
+        logInDone: false,
       };
     }
     case LOG_IN_SUCCESS: {
       return {
         ...state,
-        logInDone: true,
         logInLoading: false,
-        me: dummyUser,
-        loginData: action.data,
+        me: action.data,
+        logInDone: true,
       };
     }
     case LOG_IN_FAILURE: {
       return {
         ...state,
-        logInDone: true,
         logInLoading: false,
+        logInError: action.error,
       };
     }
     case LOG_OUT_REQUEST: {
@@ -118,6 +148,22 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         signUpData: action.data,
+        signUpLoading: true,
+        signUpDone: false,
+      };
+    }
+    case SIGN_UP_SUCCESS: {
+      return {
+        ...state,
+        signUpLoading: false,
+        signUpDone: true,
+      };
+    }
+    case SIGN_UP_FAILURE: {
+      return {
+        ...state,
+        signUpLoading: false,
+        signUpError: action.error,
       };
     }
     case EDIT_NICKNAME: {
