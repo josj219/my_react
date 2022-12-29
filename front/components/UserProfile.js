@@ -14,7 +14,7 @@ import { editnicknameAction, logoutRequestAction } from "../reducers/user";
 
 const UserProfile = () => {
   const dispatch = useDispatch();
-  const { me } = useSelector((state) => state.user);
+  const { me, logOutLoading } = useSelector((state) => state.user);
 
   const gridStyle = (React.CSSProperties = {
     width: "33.333%",
@@ -24,15 +24,15 @@ const UserProfile = () => {
   const TitleWrapper = styled.span`
     padding-right: 10px;
   `;
-  console.log("USERPROFILE의 me");
-  console.log(me);
+  console.log("USERPROFILE의 me Posts");
+  console.log(me.Posts);
 
   const changeNickname = useCallback((e) => {
     console.log("Chnage Nickname");
     dispatch(editnicknameAction());
   }, []);
 
-  const onSubmitForm = useCallback((e) => {
+  const onLogOut = useCallback((e) => {
     console.log("LOGOUT");
     dispatch(logoutRequestAction());
   }, []);
@@ -55,7 +55,7 @@ const UserProfile = () => {
               <a>
                 Post
                 <br />
-                {/* {me.Posts.length} */}
+                {me.Posts.length}
               </a>
             </Link>
           </div>,
@@ -64,7 +64,7 @@ const UserProfile = () => {
               <a>
                 Followings
                 <br />
-                {/* {me.Followings.length} */}
+                {me.Followings.length}
               </a>
             </Link>
           </div>,
@@ -73,7 +73,7 @@ const UserProfile = () => {
               <a>
                 Followers
                 <br />
-                {/* {me.Followers.length} */}
+                {me.Followers.length}
               </a>
             </Link>
           </div>,
@@ -111,7 +111,9 @@ const UserProfile = () => {
             //   padding: "10px 0",
           }}
         >
-          <Button onClick={onSubmitForm}>로그아웃</Button>
+          <Button onClick={onLogOut} loading={logOutLoading}>
+            로그아웃
+          </Button>
         </div>
       </Card>
     </Fragment>

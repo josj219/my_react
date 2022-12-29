@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from "react";
 import {
   LikeOutlined,
+  LikeTwoTone,
   MessageOutlined,
   StarOutlined,
   EllipsisOutlined,
@@ -12,7 +13,11 @@ import Link from "next/link";
 import { useSelector, useDispatch } from "react-redux";
 
 import CommentForm from "./CommentForm";
-import { REMOVE_POST_REQUEST } from "../reducers/post.js";
+import {
+  REMOVE_POST_REQUEST,
+  LIKE_POST_REQUEST,
+  UNLIKE_POST_REQUEST,
+} from "../reducers/post.js";
 
 const PostCardContent = ({ post }) => {
   //console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
@@ -24,9 +29,34 @@ const PostCardContent = ({ post }) => {
   const { me } = useSelector((state) => state.user);
 
   const [commentFormOpened, setCommentFormOpened] = useState(false);
+
   const onToggleComment = useCallback(() => {
     setCommentFormOpened((prev) => !prev);
   }, []);
+
+  const onLike = useCallback(() => {
+    if (!id) {
+      return alert("로그인이 필요합니다.");
+    }
+    console.log("onLIKE 의 post.id는");
+    console.log(post.id);
+    return dispatch({
+      type: LIKE_POST_REQUEST,
+      data: post.id,
+    });
+  }, [id]);
+
+  const onUnLike = useCallback(() => {
+    if (!id) {
+      return alert("로그인이 필요합니다.");
+    }
+    console.log("unLIKE 의 post.id는");
+    console.log(post.id);
+    return dispatch({
+      type: UNLIKE_POST_REQUEST,
+      data: post.id,
+    });
+  }, [id]);
 
   const onRemovePost = useCallback(() => {
     if (!id) {
@@ -53,21 +83,37 @@ const PostCardContent = ({ post }) => {
     width: 700px;
   `;
 
+  console.log("POST CARD CONTENT");
+  console.log("POST CARD CONTENT");
+  console.log("POST CARD CONTENT");
+  console.log(post);
+  console.log(post.Likers);
+  console.log(post.Likers.length);
+
+  const liked = post.Likers.find((v) => v.id === id);
+  console.log("Liked");
+  console.log(liked);
+
   return (
     <CardWrapper>
       <List.Item
         key={post.id}
         actions={[
-          // <IconText
-          //   icon={StarOutlined}
-          //   text=`${post.}`
-          //   key="list-vertical-star-o"
-          // />,
-          <IconText
-            icon={LikeOutlined}
-            text="135"
-            key="list-vertical-like-o"
-          />,
+          liked ? (
+            <IconText
+              icon={LikeTwoTone}
+              text={post.Likers.length}
+              key="list-vertical-like-o"
+              cb={onUnLike}
+            />
+          ) : (
+            <IconText
+              icon={LikeOutlined}
+              text={post.Likers.length}
+              key="list-vertical-like-o"
+              cb={onLike}
+            />
+          ),
           <IconText
             icon={MessageOutlined}
             key="list-vertical-message"

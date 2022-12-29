@@ -34,9 +34,9 @@ const AppLayout = ({ children }) => {
   const { EditNickname, logInDone, me } = useSelector((state) => state.user);
 
   console.log("APPLAYOUT");
+  console.log("loginDone");
   console.log(logInDone);
   console.log(EditNickname);
-  console.log(me);
   return (
     <Layout>
       <Header>
@@ -87,7 +87,7 @@ const AppLayout = ({ children }) => {
             <Col xs={24} md={5}>
               {/* {me ? <UserProfile /> : <LoginForm />} */}
 
-              {logInDone ? <UserProfile /> : <LoginForm />}
+              {me ? <UserProfile /> : <LoginForm />}
             </Col>
             <Col xs={24} md={19}>
               {children}

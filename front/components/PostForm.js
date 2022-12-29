@@ -20,7 +20,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { ADD_POST_REQUEST } from "../reducers/post";
 
 const PostForm = () => {
-  const { addPost, addPostDone } = useSelector((state) => state.post);
+  const { addPostDone } = useSelector((state) => state.post);
 
   const [text, onChangeText, setText] = useInput("");
   const dispatch = useDispatch();
@@ -47,19 +47,15 @@ const PostForm = () => {
   const { me } = useSelector((state) => state.user);
 
   const onSubmit = useCallback(() => {
-    console.log(
-      "CLIKEDCLIKEDCLIKEDCLIKEDCLIKEDCLIKEDCLIKEDCLIKEDCLIKEDCLIKEDCLIKEDCLIKEDCLIKEDCLIKEDCLIKED"
-    );
+    console.log("##############ADD_POST_REQUEST#############");
+
     return dispatch({
       type: ADD_POST_REQUEST,
-      data: {
-        content: text,
-        User: me,
-      },
+      data: { content: text },
     });
   }, [text]);
 
-  const [fileList, setFileList] = useState([]);
+  const [fileList, setFileList] = useState([""]);
 
   const onChange = ({ fileList: newFileList }) => {
     setFileList(newFileList);
@@ -90,7 +86,7 @@ const PostForm = () => {
         marginBottom: "25px",
       }}
     >
-      <Form style={{ width: "550px" }}>
+      <Form style={{ width: "550px" }} onFinish={onSubmit}>
         <Row gutter={8}>
           <Col span={5} gutter={4}>
             <ImgCrop rotate>
@@ -123,8 +119,8 @@ const PostForm = () => {
           <Col span={24}>
             <Button
               type="primary"
+              htmlType="submit"
               block
-              onClick={onSubmit}
               style={{ padding: "0 10px" }}
             >
               POST

@@ -16,7 +16,7 @@
     "antd-img-crop": "^4.2.4",
     "axios": "^0.27.2",
     "faker": "^4.1.0",
-    "immer": "^7.0.1",
+    "immer": "^7.0.15",
     "next": "^9.1.0",
     "next-redux-wrapper": "^6.0.2",
     "prop-types": "^15.8.1",

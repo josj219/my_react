@@ -16,6 +16,28 @@ import {
   LOAD_USER_SUCCESS,
 } from "../reducers/user";
 
+function loadUserAPI() {
+  return axios.get("/user");
+}
+
+function* loadUser(action) {
+  try {
+    const result = yield call(loadUserAPI, action.data);
+    console.log("$$$$$$$$$$$$$$$$$$$$$$$$$ LOAD USER REQUEST");
+    console.log(result.data);
+    yield put({
+      type: LOAD_USER_SUCCESS,
+      data: result.data,
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: LOAD_USER_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+
 function logInAPI(data) {
   return axios.post("/user/login", data);
 }
@@ -27,11 +49,11 @@ function* logIn(action) {
     yield delay(1000);
     console.log(result);
     console.log("RESULT>>>>>>>>>>>>>>>>");
-    console.log("로그인 result 받음");
     yield put({
       type: LOG_IN_SUCCESS,
       data: result.data,
     });
+    console.log("LOGIN SAGA 에서의 action.data 값");
     console.log(action.data);
   } catch (err) {
     console.error(err);
@@ -97,6 +119,15 @@ function* watchSignUp() {
   yield takeLatest(SIGN_UP_REQUEST, signUp);
 }
 
+function* watchLoadUser() {
+  yield takeLatest(LOAD_USER_REQUEST, loadUser);
+}
+
 export default function* userSaga() {
-  yield all([fork(watchLogIn), fork(watchLogOut), fork(watchSignUp)]);
+  yield all([
+    fork(watchLogIn),
+    fork(watchLogOut),
+    fork(watchSignUp),
+    fork(watchLoadUser),
+  ]);
 }
