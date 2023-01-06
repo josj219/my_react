@@ -11,6 +11,7 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import Link from "next/link";
 import { useSelector, useDispatch } from "react-redux";
+//import PostImages from "./PostImages";
 
 import CommentForm from "./CommentForm";
 import {
@@ -86,13 +87,12 @@ const PostCardContent = ({ post }) => {
   console.log("POST CARD CONTENT");
   console.log("POST CARD CONTENT");
   console.log("POST CARD CONTENT");
+  //console.log(post);
   console.log(post);
-  console.log(post.Likers);
-  console.log(post.Likers.length);
 
   const liked = post.Likers.find((v) => v.id === id);
   console.log("Liked");
-  console.log(liked);
+  console.log(post.Images[0]);
 
   return (
     <CardWrapper>
@@ -151,7 +151,7 @@ const PostCardContent = ({ post }) => {
         <List.Item.Meta
           avatar={
             <Avatar
-              src={post.avatar}
+              src={post.User.ava}
               style={{ width: "45px", height: "45px" }}
             />
           }
@@ -171,7 +171,7 @@ const PostCardContent = ({ post }) => {
             height="100%"
             style={{ objectFit: "cover", justifyContent: "center" }}
             alt="logo"
-            src={post.imagePaths}
+            src={`http://localhost:3065/uploads/${post.Images[0]}`}
           />
         </div>
         <br />
@@ -197,6 +197,7 @@ PostCardContent.propTypes = {
     nickname: PropTypes.string,
     description: PropTypes.string,
     avatar: PropTypes.any,
+    Images: PropTypes.object,
     Comments: PropTypes.arrayOf(PropTypes.any),
   }),
 };

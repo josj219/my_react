@@ -7,6 +7,7 @@ module.exports = () => {
   passport.serializeUser((user, done) => {
     done(null, user.id);
   });
+  //로그인 하고 id로 지정해놓음
 
   passport.deserializeUser(async (id, done) => {
     try {
@@ -17,6 +18,7 @@ module.exports = () => {
       done(error);
     }
   });
+  //req.user 에 값 저장해서 이걸로 사용함
 
   local();
 };

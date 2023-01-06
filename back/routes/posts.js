@@ -27,6 +27,7 @@ router.get("/", async (req, res, next) => {
         },
         {
           model: Image,
+          attributes: ["src"],
         },
         {
           model: Comment,
@@ -57,7 +58,7 @@ router.get("/", async (req, res, next) => {
         // },
       ],
     });
-    console.log(posts);
+    //console.log(posts);
     res.status(200).json(posts);
   } catch (error) {
     console.error(error);

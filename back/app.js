@@ -53,9 +53,9 @@ app.get("/api", (req, res) => {
   res.send("hello API");
 });
 
-app.use("/user", userRouter);
 app.use("/posts", postsRouter);
 app.use("/post", postRouter);
+app.use("/user", userRouter);
 
 // app.use((err,req,res,next)=>{
 
