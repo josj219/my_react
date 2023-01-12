@@ -1,6 +1,7 @@
 const express = require("express");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
+const path = require("path");
 
 const passport = require("passport");
 const postRouter = require("./routes/post");
@@ -28,6 +29,8 @@ app.use(
     credentials: true,
   })
 );
+app.use("/", express.static(path.join(__dirname, "uploads")));
+//운영체제 차이없이 path 경로 지정해주려고 path.join 쓴다
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 //세션이랑 쿠키 아래 4개 추가해줘야 함

@@ -22,10 +22,10 @@ const upload = multer({
       done(null, "uploads"); // 목적지 디렉토리 - 요청 너무 받으면 서버 스케일링 해야 함
     },
     filename(req, file, done) {
-      // 제로초.png  파일명
+      // xxx.png  파일명
       const ext = path.extname(file.originalname); // 확장자 추출(.png) -
-      const basename = path.basename(file.originalname, ext); // 제로초 - path 는 노드에서 제공하는 거 - 파일 확장자 뽑고 하는 용도
-      done(null, basename + "_" + new Date().getTime() + ext); // 제로초15184712891.png 파일명 중복될까바 날짜 붙여줘서 중복 안되게 처리
+      const basename = path.basename(file.originalname, ext); // path 는 노드에서 제공하는 거 - 파일 확장자 뽑고 하는 용도
+      done(null, basename + "_" + new Date().getTime() + ext); // 15184712891.png 파일명 중복될까바 날짜 붙여줘서 중복 안되게 처리
     },
   }),
   limits: { fileSize: 20 * 1024 * 1024 }, // 20MB 파일 업로드 크기 제하 - 이게 서버 공격 될 수도 있다
@@ -34,7 +34,10 @@ const upload = multer({
 router.post("/images", isLoggedIn, upload.single("image"), (req, res, next) => {
   // POST /post/images
   console.log("images post 받음@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+  console.log("REQ FILE FILENAME");
+
   console.log(req.file.filename);
+
   res.json(req.file.filename);
 });
 
@@ -59,6 +62,7 @@ router.post("/", isLoggedIn, upload.none(), async (req, res, next) => {
         // 이미지를 하나만 올리면 image: 제로초.png
         const image = await Image.create({ src: req.body.image });
         await post.addImages(image);
+        console.log(post);
       }
     }
 

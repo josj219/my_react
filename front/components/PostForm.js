@@ -11,6 +11,7 @@ import {
   Upload,
   Row,
   Col,
+  message,
 } from "antd";
 import ImgCrop from "antd-img-crop";
 
@@ -20,9 +21,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { ADD_POST_REQUEST, UPLOAD_IMAGES_REQUEST } from "../reducers/post";
 
 const PostForm = () => {
-  const { addPostDone } = useSelector((state) => state.post);
+  const { imagePaths, addPostDone } = useSelector((state) => state.post);
 
   const [text, onChangeText, setText] = useInput("");
+  const [imageData, onChangeimageData, setimageData] = useInput("");
+
   const dispatch = useDispatch();
 
   const [uploading, setUploading] = useState(false);
@@ -33,21 +36,7 @@ const PostForm = () => {
     }
   }, [addPostDone]);
 
-  // const onSubmit = useCallback(() => {
-  //   if (!text || !text.trim()) {
-  //     return alert("게시글을 작성하세요.");
-  //   }
-  //   const formData = new FormData();
-
-  //   formData.append("content", text);
-  //   return dispatch({
-  //     type: ADD_POST_REQUEST,
-  //     data: formData,
-  //   });
-  // }, [text]);
-  // // content, Avatar
   const { me } = useSelector((state) => state.user);
-  const newimageFormData = null;
 
   const onSubmit = useCallback(() => {
     console.log("##############ADD_POST_REQUEST#############");
@@ -57,15 +46,21 @@ const PostForm = () => {
     }
 
     const formData = new FormData();
-    formData.append("image", newimageFormData);
+
+    formData.append("image", imagePaths);
+
     formData.append("content", text);
 
+    console.log(
+      "ADDPOST REQUEST %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
+    );
     console.log(formData);
+
     return dispatch({
       type: ADD_POST_REQUEST,
       data: formData,
     });
-  }, [text]);
+  }, [text, imagePaths]);
 
   const imageInput = useRef();
 
@@ -73,26 +68,44 @@ const PostForm = () => {
   //   imageInput.current.click();
   // }, [imageInput.current]);
 
-  const [fileList, setFileList] = useState([""]);
+  const [fileList, setFileList] = useState([]);
 
   const onChangeImages = useCallback((e) => {
-    console.log("image", e.target.files);
-    //setFileList(newFileList);
+    console.log("image normal", e);
+    console.log("image normal", e.target);
+    console.log("image normal", e.target.files);
+    console.log("image normal", e.target.files[0]);
+    console.log("fileList", e.target.fileList);
     const imageFormData = new FormData();
-    //imageFormData.append("image");
-    [].forEach.call(e.target.files, (f) => {
-      imageFormData.append("image", f);
-    });
-    newimageFormData = imageFormData;
+    const img = e.target.files[0];
+    imageFormData.append("image", img);
+    console.log(imageFormData);
+
     dispatch({
       type: UPLOAD_IMAGES_REQUEST,
       data: imageFormData,
     });
   }, []);
 
-  const onChangeImg = ({ fileList: newFileList }) => {
-    setFileList(newFileList);
-  };
+  const onChangeImg = useCallback((e) => {
+    console.log("imagebeforeupload", e);
+    console.log("imagebeforeupload", e.file);
+    console.log("imagebeforeupload", e.file.originFileObj);
+    //setFileList(newFileList);
+    //{ file, fileList: newFileList }
+    console.log("fileList", e.file.fileList);
+    //setFileList(e.file.fileList);
+    const img = e.file.originFileObj;
+    const imageFormData = new FormData();
+
+    imageFormData.append("image", img);
+    console.log(imageFormData);
+
+    dispatch({
+      type: UPLOAD_IMAGES_REQUEST,
+      data: imageFormData,
+    });
+  }, []);
 
   const onPreview = async (file) => {
     console.log("PREVIEW");
@@ -129,30 +142,33 @@ const PostForm = () => {
         encType="multipart/form-data"
       >
         <Row gutter={8}>
-          <Col span={10} gutter={4}>
+          <Col span={6} gutter={4}>
             <Row>
               <ImgCrop rotate>
                 <Upload
-                  action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                  type="file"
+                  name="image"
+                  action="/upload.do"
                   listType="picture-card"
-                  filelist={fileList}
                   onChange={onChangeImg}
+                  fileList={fileList}
+                  //beforeUpload={beforeUpload}
                   onPreview={onPreview}
                   style={{ width: "100%" }}
                 >
                   {fileList.length < 1 && "+ Img Upload"}
                 </Upload>
                 {/* <Button
-                type="primary"
-                onClick={ImgUpload}
-                disabled={fileList.length === 0}
-                loading={uploading}
-                style={{
-                  marginTop: 16,
-                }}
+                  type="primary"
+                  onClick={ImgUpload}
+                  disabled={fileList.length === 0}
+                  loading={uploading}
+                  style={{
+                    marginTop: 16,
+                  }}
                 >
-                {uploading ? "Uploading" : "Start Upload"}
-              </Button> */}
+                  {uploading ? "Uploading" : "Start Upload"}
+                </Button> */}
               </ImgCrop>
             </Row>
             <Row>
@@ -165,7 +181,7 @@ const PostForm = () => {
             </Row>
           </Col>
 
-          <Col span={14}>
+          <Col span={18}>
             <TextArea
               showCount
               value={text}

@@ -11,7 +11,7 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import Link from "next/link";
 import { useSelector, useDispatch } from "react-redux";
-//import PostImages from "./PostImages";
+import PostImages from "./PostImages";
 
 import CommentForm from "./CommentForm";
 import {
@@ -84,15 +84,9 @@ const PostCardContent = ({ post }) => {
     width: 700px;
   `;
 
-  console.log("POST CARD CONTENT");
-  console.log("POST CARD CONTENT");
-  console.log("POST CARD CONTENT");
-  //console.log(post);
-  console.log(post);
-
   const liked = post.Likers.find((v) => v.id === id);
-  console.log("Liked");
-  console.log(post.Images[0]);
+  console.log("@@@@@@@@ POST IMAGES @@@@@@@@");
+  if (post.Images[0]) console.log(post.Images[0]);
 
   return (
     <CardWrapper>
@@ -166,13 +160,7 @@ const PostCardContent = ({ post }) => {
             margin: "0 auto",
           }}
         >
-          <img
-            width="100%"
-            height="100%"
-            style={{ objectFit: "cover", justifyContent: "center" }}
-            alt="logo"
-            src={`http://localhost:3065/uploads/${post.Images[0]}`}
-          />
+          {post.Images[0] && <PostImages images={post.Images} />}
         </div>
         <br />
         <div style={{ fontSize: "18px", fontWeight: "500" }}>

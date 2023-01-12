@@ -4,7 +4,7 @@ import produce from "immer";
 
 export const initialState = {
   mainPosts: [],
-  imagePaths: [],
+  imagePaths: null,
   hasMorePosts: true,
   loadPostsLoading: false,
   loadPostsDone: false,
