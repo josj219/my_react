@@ -25,6 +25,7 @@ const PostForm = () => {
 
   const [text, onChangeText, setText] = useInput("");
   const [imageData, onChangeimageData, setimageData] = useInput("");
+  const [fileList, setFileList] = useState([]);
 
   const dispatch = useDispatch();
 
@@ -39,23 +40,14 @@ const PostForm = () => {
   const { me } = useSelector((state) => state.user);
 
   const onSubmit = useCallback(() => {
-    console.log("##############ADD_POST_REQUEST#############");
-
     if (!text || !text.trim()) {
       return alert("게시글을 작성하세요.");
     }
-
     const formData = new FormData();
-
     formData.append("image", imagePaths);
-
     formData.append("content", text);
 
-    console.log(
-      "ADDPOST REQUEST %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
-    );
-    console.log(formData);
-
+    setFileList([]);
     return dispatch({
       type: ADD_POST_REQUEST,
       data: formData,
@@ -67,8 +59,6 @@ const PostForm = () => {
   // const onClickImageUpload = useCallback(() => {
   //   imageInput.current.click();
   // }, [imageInput.current]);
-
-  const [fileList, setFileList] = useState([]);
 
   const onChangeImages = useCallback((e) => {
     console.log("image normal", e);
@@ -93,8 +83,8 @@ const PostForm = () => {
     console.log("imagebeforeupload", e.file.originFileObj);
     //setFileList(newFileList);
     //{ file, fileList: newFileList }
-    console.log("fileList", e.file.fileList);
-    //setFileList(e.file.fileList);
+    console.log("FILELIST", e.fileList);
+    setFileList(e.fileList);
     const img = e.file.originFileObj;
     const imageFormData = new FormData();
 
@@ -148,7 +138,7 @@ const PostForm = () => {
                 <Upload
                   type="file"
                   name="image"
-                  action="/upload.do"
+                  action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
                   listType="picture-card"
                   onChange={onChangeImg}
                   fileList={fileList}
@@ -172,12 +162,12 @@ const PostForm = () => {
               </ImgCrop>
             </Row>
             <Row>
-              <input
+              {/* <input
                 type="file"
                 name="image"
                 ref={imageInput}
                 onChange={onChangeImages}
-              />
+              /> */}
             </Row>
           </Col>
 

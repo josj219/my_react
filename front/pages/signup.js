@@ -56,6 +56,23 @@ const Signup = () => {
     });
   }, [id, password, passwordCheck]);
 
+  const imageInput = useRef();
+  const onClickImageUpload = useCallback(() => {
+    imageInput.current.click();
+  }, [imageInput.current]);
+
+  const onChangeImages = useCallback((e) => {
+    console.log("images", e.target.files);
+    const imageFormData = new FormData();
+    [].forEach.call(e.target.files, (f) => {
+      imageFormData.append("image", f);
+    });
+    dispatch({
+      type: UPLOAD_IMAGES_REQUEST,
+      data: imageFormData,
+    });
+  }, []);
+
   return (
     <AppLayout>
       <Head>
@@ -128,6 +145,21 @@ const Signup = () => {
             <div style={{ color: "red" }}>비밀번호가 일치하지 않습니다.</div>
           )}
         </div>
+        <div>
+          <input
+            type="file"
+            name="Avatar"
+            multiple
+            hidden
+            ref={AvatarInput}
+            onChange={onChangeAvatar}
+          />
+          <Button onClick={onClickAvatarUpload}>이미지 업로드</Button>
+          <Button type="primary" style={{ float: "right" }} htmlType="submit">
+            프로필 사진
+          </Button>
+        </div>
+
         <Form.Item
           wrapperCol={{
             offset: 7,

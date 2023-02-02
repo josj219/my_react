@@ -11,18 +11,6 @@ import CommentForm from "./CommentForm";
 import PostCardContent from "./PostCardContent";
 import { LOAD_POSTS_REQUEST } from "../reducers/post";
 
-const data = Array.from({
-  length: 23,
-}).map((_, i) => ({
-  href: "https://ant.design",
-  title: `ant design part ${i}`,
-  avatar: "https://joeschmoe.io/api/v1/random",
-  description:
-    "Ant Design, a design language for background applications, is refined by Ant UED Team.",
-  content:
-    "We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.",
-}));
-
 const IconText = ({ icon, text }) => (
   <Space>
     {React.createElement(icon)}
@@ -67,8 +55,6 @@ const PostCard2 = () => {
       window.removeEventListener("scroll", onScroll);
     };
   }, [hasMorePosts, loadPostsLoading, mainPosts]);
-
-  console.log(mainPosts);
 
   return (
     <List

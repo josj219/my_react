@@ -43,11 +43,12 @@ const CommentForm = ({ post }) => {
     console.log(
       "CLIKEDCLIKEDCLIKEDCLIKEDCLIKEDCLIKEDCLIKEDCLIKEDCLIKEDCLIKEDCLIKEDCLIKEDCLIKEDCLIKEDCLIKED"
     );
+
     return dispatch({
       type: ADD_COMMENT_REQUEST,
       data: {
         content: commentText,
-        userId: id,
+        userId: me.id,
         postId: post.id,
       },
     });
@@ -70,26 +71,6 @@ const CommentForm = ({ post }) => {
     console.log("delete Comment액션 처리");
   };
 
-  const actions = [
-    <Tooltip key="comment-basic-like" title="Like">
-      <span onClick={like}>
-        {createElement(action === "liked" ? LikeFilled : LikeOutlined)}
-        <span className="comment-action">{likes}</span>
-      </span>
-    </Tooltip>,
-    <Tooltip key="comment-basic-dislike" title="Dislike">
-      <span onClick={dislike}>
-        {React.createElement(
-          action === "disliked" ? DislikeFilled : DislikeOutlined
-        )}
-        <span className="comment-action">{dislikes}</span>
-      </span>
-    </Tooltip>,
-    <span onClick={deleteComment} key="comment-basic-reply-to">
-      DELETE
-    </span>,
-  ];
-
   return (
     <>
       <List
@@ -99,9 +80,8 @@ const CommentForm = ({ post }) => {
         renderItem={(item) => (
           <li>
             <Comment
-              actions={actions}
               author={item.User.nickname}
-              avatar={item.User.avatar}
+              avatar={item.User.ava}
               content={item.content}
             />
           </li>

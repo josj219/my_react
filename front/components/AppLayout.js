@@ -23,7 +23,7 @@ const BreadcrumbStyle = styled(Breadcrumb)`
 const ContentsWrapper = styled.div`
   minheight: 280px;
   margintop: 50px;
-  padding-right: 20px;
+  padding-left: 70px;
 `;
 
 const FooterWrapper = styled.div`

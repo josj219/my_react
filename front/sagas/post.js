@@ -155,11 +155,15 @@ function* loadPosts(action) {
 }
 
 function addCommentAPI(data) {
-  return axios.poest(`/post/${data.postId}/comment`, data);
+  return axios.post(`/post/${data.postId}/comment`, data);
 }
 
 function* addComment(action) {
   try {
+    console.log("COMMENT ADD ?????????????????");
+    console.log("COMMENT ADD ?????????????????");
+    console.log("COMMENT ADD ?????????????????");
+
     const result = yield call(addCommentAPI, action.data);
     console.log("ADDCOMMENT");
     yield delay(1000);

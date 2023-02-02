@@ -21,9 +21,6 @@ import {
 } from "../reducers/post.js";
 
 const PostCardContent = ({ post }) => {
-  //console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-  //console.log(post);
-
   const dispatch = useDispatch();
   const { removePostLoading } = useSelector((state) => state.post);
   const id = useSelector((state) => state.user.me?.id);
@@ -111,7 +108,7 @@ const PostCardContent = ({ post }) => {
           <IconText
             icon={MessageOutlined}
             key="list-vertical-message"
-            text="2"
+            text={post.Comments.length}
             cb={onToggleComment}
           />,
           <Popover

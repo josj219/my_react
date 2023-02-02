@@ -21,6 +21,7 @@ export const initialState = {
   loadUserLoading: false, // 유저 정보 가져오기 시도중
   loadUserDone: false,
   loadUserError: null,
+  EditNickname: false,
 };
 
 export const LOAD_USER_REQUEST = "LOAD_USER_REQUEST";

@@ -147,16 +147,6 @@ const dummyPost = (data) => ({
   Liked: 0,
 });
 
-const dummyComment = (data) => ({
-  id: shortId.generate(),
-  content: data.content,
-  User: {
-    id: data.user.id,
-    nickname: data.user.nickname,
-    avatar: data.user.Avatar,
-  },
-});
-
 //리듀서란 : 이전 상태를 액션을 통해 다음 상태로 만들어내는 함수
 //   단, 불변성은 지켜야 함
 const reducer = (state = initialState, action) => {
@@ -259,7 +249,7 @@ const reducer = (state = initialState, action) => {
         break;
       case ADD_COMMENT_SUCCESS: {
         const post = draft.mainPosts.find((v) => v.id === action.data.postId);
-        post.Comments.unshift(dummyComment(action.data.content));
+        post.Comments.unshift(action.data);
         draft.addCommentLoading = false;
         draft.addCommentDone = true;
         break;

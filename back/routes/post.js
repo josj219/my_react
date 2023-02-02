@@ -36,16 +36,11 @@ router.post("/images", isLoggedIn, upload.single("image"), (req, res, next) => {
   console.log("images post 받음@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
   console.log("REQ FILE FILENAME");
 
-  console.log(req.file.filename);
-
   res.json(req.file.filename);
 });
 
 router.post("/", isLoggedIn, upload.none(), async (req, res, next) => {
   try {
-    console.log(req.body);
-    console.log(req.body.content);
-    console.log(req.user.id);
     const post = await Post.create({
       content: req.body.content,
       UserId: req.user.id,
@@ -62,7 +57,6 @@ router.post("/", isLoggedIn, upload.none(), async (req, res, next) => {
         // 이미지를 하나만 올리면 image: 제로초.png
         const image = await Image.create({ src: req.body.image });
         await post.addImages(image);
-        console.log(post);
       }
     }
 
@@ -108,7 +102,6 @@ router.patch("/:postId/like", isLoggedIn, async (req, res, next) => {
       return res.status(403).send("존재하지 않는 게시글입니다.");
     }
     console.log("PATCHED post");
-    console.log(post);
 
     await post.addLikers(req.user.id);
     res.json({ PostId: post.id, UserId: req.user.id });
@@ -134,8 +127,11 @@ router.delete("/:postId/unlike", isLoggedIn, async (req, res, next) => {
   }
 });
 
-router.post("/:postId/comment", async (req, res, next) => {
+router.post("/:postId/comment", isLoggedIn, async (req, res, next) => {
   try {
+    console.log("POST ROUTES BACK");
+    console.log("POST ROUTES BACK");
+    console.log("POST ROUTES BACK");
     const post = await Post.findOne({
       where: { id: req.params.postId },
     });
@@ -144,10 +140,19 @@ router.post("/:postId/comment", async (req, res, next) => {
     }
     const comment = await Comment.create({
       content: req.body.content,
-      PostId: req.params.postId,
+      PostId: parseInt(req.params.postId, 10),
       UserId: req.user.id,
     });
-    res.status(201).json(post);
+    const fullComment = await Comment.findOne({
+      where: { id: comment.id },
+      include: [
+        {
+          model: User,
+          attributes: ["id", "nickname"],
+        },
+      ],
+    });
+    res.status(201).json(fullComment);
   } catch (error) {
     console.log(error);
     next(error);
