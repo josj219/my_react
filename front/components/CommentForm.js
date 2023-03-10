@@ -71,6 +71,8 @@ const CommentForm = ({ post }) => {
     console.log("delete Comment액션 처리");
   };
 
+  const editButton = <Button>ddd</Button>;
+
   return (
     <>
       <List
@@ -83,7 +85,10 @@ const CommentForm = ({ post }) => {
               author={item.User.nickname}
               avatar={item.User.ava}
               content={item.content}
-            />
+            >
+              {me.id === item.User.id ? <Button>edit</Button> : null}
+              {me.id === item.User.id ? <Button>delete</Button> : null}
+            </Comment>
           </li>
         )}
       />

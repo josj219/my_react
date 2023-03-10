@@ -19,6 +19,7 @@ import {
   LIKE_POST_REQUEST,
   UNLIKE_POST_REQUEST,
 } from "../reducers/post.js";
+import FollowButton from "./FollowButton";
 
 const PostCardContent = ({ post }) => {
   const dispatch = useDispatch();
@@ -163,7 +164,11 @@ const PostCardContent = ({ post }) => {
         <div style={{ fontSize: "18px", fontWeight: "500" }}>
           {post.content}
         </div>
-        <div style={{ width: "400px" }}></div>
+        <div style={{ width: "400px" }}>
+          <>
+            <FollowButton post={post} />
+          </>
+        </div>
       </List.Item>
       {commentFormOpened && (
         <>

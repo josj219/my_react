@@ -122,4 +122,32 @@ router.post("/logout", isLoggedIn, (req, res) => {
   res.send("ok");
 });
 
+router.patch("/:userId/follow", isLoggedIn, async (req, res, next) => {
+  // patach /1/follow
+  try {
+    const user = await User.findOne({ where: { id: req.params.userId } });
+    if (!user) {
+      res.status(403).send("없는 사람을 팔로우하려고 하네");
+    }
+    await user.addFollowers(req.user.id);
+    res.status(200).json({ nickname: req.body.nickname });
+  } catch (e) {
+    console.error(e);
+    next(e);
+  }
+});
+
+router.delete("/:userId/follow", isLoggedIn, async (req, res, next) => {
+  try {
+    const user = await User.findOne({ where: { id: req.params.userId } });
+    if (!user) {
+      res.status(403).send("없는 사람을 어떻게 언팔하냐");
+    }
+    await user.removeFollowers(req.user.id);
+    res.status(200).json({ id: req.params.userId });
+  } catch (e) {
+    console.error(e);
+    next(e);
+  }
+});
 module.exports = router;

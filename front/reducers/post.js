@@ -147,6 +147,16 @@ const dummyPost = (data) => ({
   Liked: 0,
 });
 
+export const addPost = (data) => ({
+  type: ADD_POST_REQUEST,
+  data,
+});
+
+export const addComment = (data) => ({
+  type: ADD_COMMENT_REQUEST,
+  data,
+});
+
 //리듀서란 : 이전 상태를 액션을 통해 다음 상태로 만들어내는 함수
 //   단, 불변성은 지켜야 함
 const reducer = (state = initialState, action) => {
@@ -248,7 +258,7 @@ const reducer = (state = initialState, action) => {
         draft.addCommentError = null;
         break;
       case ADD_COMMENT_SUCCESS: {
-        const post = draft.mainPosts.find((v) => v.id === action.data.postId);
+        const post = draft.mainPosts.find((v) => v.id === action.data.PostId);
         post.Comments.unshift(action.data);
         draft.addCommentLoading = false;
         draft.addCommentDone = true;

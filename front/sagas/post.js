@@ -165,8 +165,7 @@ function* addComment(action) {
     console.log("COMMENT ADD ?????????????????");
 
     const result = yield call(addCommentAPI, action.data);
-    console.log("ADDCOMMENT");
-    yield delay(1000);
+    console.log("ADDCOMMENT after back");
     yield put({
       type: ADD_COMMENT_SUCCESS,
       data: result.data,
